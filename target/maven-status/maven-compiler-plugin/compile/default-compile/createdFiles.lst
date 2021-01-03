@@ -1,0 +1,9 @@
+fr\mssteur\mssbingo\manager\TeamManager.class
+fr\mssteur\mssbingo\listeners\MainListeners.class
+fr\mssteur\mssbingo\guis\CommandsMenu.class
+fr\mssteur\mssbingo\commands\CommandTeamInfo.class
+fr\mssteur\mssbingo\guis\sencondariesGuis\bingoHelperMenu.class
+fr\mssteur\mssbingo\guis\sencondariesGuis\teaminfosHelperMenu.class
+fr\mssteur\mssbingo\guis\sencondariesGuis\configHelperMenu.class
+fr\mssteur\mssbingo\commands\CommandConfig.class
+fr\mssteur\mssbingo\guis\TeamManagerMenu.class
