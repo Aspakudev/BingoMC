@@ -38,7 +38,6 @@ public class MainListeners implements Listener{
     @EventHandler
     public void onInteract(PlayerInteractEvent event){
         Player player = event.getPlayer();
-        Action action = event.getAction();
         ItemStack it = event.getItem();
 
         if(it == null) return;
