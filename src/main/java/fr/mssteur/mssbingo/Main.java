@@ -5,7 +5,6 @@ import fr.mssteur.mssbingo.commands.CommandBingo;
 import fr.mssteur.mssbingo.commands.CommandConfig;
 import fr.mssteur.mssbingo.commands.CommandTeamInfo;
 import fr.mssteur.mssbingo.listeners.MainListeners;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
