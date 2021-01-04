@@ -1,6 +1,5 @@
 package fr.mssteur.mssbingo.commands;
 
-import fr.mssteur.mssbingo.guis.TeamManagerMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
