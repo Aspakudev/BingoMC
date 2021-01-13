@@ -1,0 +1,12 @@
+name: MSSBingo
+version: 1.0
+author: MSSTEUR
+main: fr.mssteur.mssbingo.Main
+commands:
+  config:
+    description: Permet de configurer la partie.
+    permission: config.use
+  bingo:
+    description: Permet d'afficher la grille du bingo.
+  teaminfo:
+    description: Affiche les informations principales sur les teams (Nombre de joueurs / équipes).
