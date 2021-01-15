@@ -2,14 +2,14 @@ package fr.mssteur.mssbingo.listeners;
 
 import fr.mssteur.mssbingo.Main;
 import fr.mssteur.mssbingo.guis.ConfigMenu;
+import fr.mssteur.mssbingo.guis.TeamSelectorMenu;
+import fr.mssteur.mssbingo.objects.Game;
 import fr.mssteur.mssbingo.objects.State;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -17,23 +17,21 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitTask;
 
 public class MainListeners implements Listener{
 
     private Main plugin;
+
+    private Game game;
+
     public MainListeners(Main plugin){
         this.plugin = plugin;
     }
-
-    private BukkitTask task;
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
@@ -49,8 +47,17 @@ public class MainListeners implements Listener{
         customM.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         configurer.setItemMeta(customM);
 
+        ItemStack bannerTeam = new ItemStack(Material.BANNER, 1, (short)7);
+        ItemMeta bannerTeamM = bannerTeam.getItemMeta();
+        bannerTeamM.setDisplayName("§5Teams");
+        bannerTeam.setItemMeta(bannerTeamM);
+
         player.getInventory().clear();
         player.getInventory().setItem(4, configurer);
+
+        if(!plugin.game.state.equals(State.Launched)){
+            player.getInventory().setItem(0, bannerTeam);
+        }
 
         player.updateInventory();
 
@@ -58,10 +65,24 @@ public class MainListeners implements Listener{
             player.setFoodLevel(25);
         }
 
-        //TODO: TP Les joueurs
+        //TP Les joueurs
         Location location = new Location(Bukkit.getServer().getWorld("lobby"), 0, 99, 0);
         location.setPitch(location.getPitch() + 60f);
         player.teleport(location);
+
+        Player pName = player.getPlayer();
+
+        game.getPlayers().add(pName);
+
+    }
+
+    @EventHandler
+    public void onDisconnect(PlayerQuitEvent event){
+
+        Player player = event.getPlayer();
+
+        game.getPlayers().remove(player);
+
     }
 
     @EventHandler
@@ -75,6 +96,11 @@ public class MainListeners implements Listener{
         if(it.getType() == Material.COMPASS && it.hasItemMeta() && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().equalsIgnoreCase("§5Config")){
             ConfigMenu.CONFIG.open(player);
         }
+
+        if(it.getType() == Material.BANNER && !plugin.game.state.equals(State.Launched)){
+            TeamSelectorMenu.TEAMSELECTOR.open(player);
+        }
+
     }
 
     @EventHandler
@@ -121,6 +147,15 @@ public class MainListeners implements Listener{
         if(!plugin.game.state.equals(State.Launched)){
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onInvClick(InventoryClickEvent event){
+
+        if(!plugin.game.state.equals(State.Launched)){
+            event.setCancelled(true);
+        }
+
     }
 
 }

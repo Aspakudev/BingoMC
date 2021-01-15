@@ -1,6 +1,8 @@
 package fr.mssteur.mssbingo.commands;
 
+import fr.mssteur.mssbingo.Main;
 import fr.mssteur.mssbingo.guis.ConfigMenu;
+import fr.mssteur.mssbingo.objects.State;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,6 +14,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class CommandConfig implements CommandExecutor {
+
+    private Main plugin;
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] strings) {
 
@@ -26,7 +31,7 @@ public class CommandConfig implements CommandExecutor {
             customM.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             configurer.setItemMeta(customM);
 
-            if(!player.getInventory().contains(Material.COMPASS)){
+            if(!player.getInventory().contains(Material.COMPASS) && !plugin.game.state.equals(State.Launched)){
                 player.getInventory().setItem(4, configurer);
                 player.updateInventory();
             }

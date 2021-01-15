@@ -5,6 +5,7 @@ import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import fr.mssteur.mssbingo.Main;
+import fr.mssteur.mssbingo.objects.Game;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,6 +16,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Collections;
 
 public class ConfigMenu implements InventoryProvider {
+
+    public int starter = 1;
+    private Game plugin;
+
     public static final SmartInventory CONFIG = SmartInventory.builder()
             .id("configGui")
             .provider(new ConfigMenu())
@@ -48,6 +53,16 @@ public class ConfigMenu implements InventoryProvider {
         dleavem.setDisplayName(ChatColor.RED + "Fermer");
         doorleave.setItemMeta(dleavem);
 
+        ItemStack startSlime = new ItemStack(Material.SLIME_BLOCK, 1);
+        ItemMeta slimeM = startSlime.getItemMeta();
+        slimeM.setDisplayName(ChatColor.GREEN + "Démarrer la partie");
+        startSlime.setItemMeta(slimeM);
+
+        ItemStack stopBlock = new ItemStack(Material.REDSTONE_BLOCK, 1);
+        ItemMeta stopM = stopBlock.getItemMeta();
+        stopM.setDisplayName(ChatColor.RED + "Annuler");
+        stopBlock.setItemMeta(stopM);
+
         ItemStack bannerteam = new ItemStack(Material.BANNER, 1, (short)7);
         ItemMeta bannerteamM = bannerteam.getItemMeta();
         bannerteamM.setDisplayName(ChatColor.AQUA + "Gestionnaire de Team");
@@ -72,6 +87,13 @@ public class ConfigMenu implements InventoryProvider {
                 e -> CommandsMenu.COMMANDS.open(player)));
         contents.set(0, 8, ClickableItem.of(new ItemStack(doorleave),
                 e -> player.closeInventory()));
+        if(starter == 1){
+            contents.set(1, 4, ClickableItem.of(new ItemStack(startSlime),
+                    e -> { plugin.launch(player);
+                    }));
+        }
+
+
     }
 
     @Override
