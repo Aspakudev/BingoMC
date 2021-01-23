@@ -5,6 +5,7 @@ import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import fr.mssteur.mssbingo.Main;
+import fr.mssteur.mssbingo.listeners.MainListeners;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,7 +15,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Random;
 
 public class BingoMenu implements InventoryProvider {
-
     private final Random random = new Random();
 
     public static final SmartInventory BINGO = SmartInventory.builder()
@@ -28,6 +28,7 @@ public class BingoMenu implements InventoryProvider {
     @Override
     public void init(Player player, InventoryContents contents) {
         Main main = JavaPlugin.getPlugin(Main.class);
+
         int[] x = {2,3,4,5,6};
         int[] y = {0,1,2,3,4};
         int xi = 0;
@@ -45,7 +46,6 @@ public class BingoMenu implements InventoryProvider {
                 yi = (yi + 1)%5;
             }
         }
-
     }
 
     @Override

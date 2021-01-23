@@ -118,7 +118,9 @@ public class Main extends JavaPlugin {
 
         System.out.println("[MSSBingo] > Le plugin est en maintenant actif !");
 
-        //TODO: Boucle de jeu
+        invManager.init();
+        Bukkit.getScheduler().runTaskTimer(this, () -> game.tick(), 1, 1);
+
     }
 
     public InventoryManager getInvManager() {

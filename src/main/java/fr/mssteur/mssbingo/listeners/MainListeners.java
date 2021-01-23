@@ -22,16 +22,19 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
+import sun.security.jca.GetInstance;
+
+import java.util.*;
 
 public class MainListeners implements Listener{
 
+    private static MainListeners instance;
     private Main plugin;
-
-    private Game game;
-
     public MainListeners(Main plugin){
         this.plugin = plugin;
     }
+    public List<ItemStack> correctItem = new ArrayList<ItemStack>();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event){
@@ -53,7 +56,10 @@ public class MainListeners implements Listener{
         bannerTeam.setItemMeta(bannerTeamM);
 
         player.getInventory().clear();
-        player.getInventory().setItem(4, configurer);
+
+        if(!plugin.game.state.equals(State.Launched) && player.hasPermission("bingo.config")){
+            player.getInventory().setItem(4, configurer);
+        }
 
         if(!plugin.game.state.equals(State.Launched)){
             player.getInventory().setItem(0, bannerTeam);
@@ -70,9 +76,7 @@ public class MainListeners implements Listener{
         location.setPitch(location.getPitch() + 60f);
         player.teleport(location);
 
-        Player pName = player.getPlayer();
-
-        game.getPlayers().add(pName);
+        plugin.game.getPlayers().add(player);
 
     }
 
@@ -81,7 +85,7 @@ public class MainListeners implements Listener{
 
         Player player = event.getPlayer();
 
-        game.getPlayers().remove(player);
+        plugin.game.getPlayers().remove(player);
 
     }
 
@@ -93,7 +97,7 @@ public class MainListeners implements Listener{
 
         if(it == null) return;
 
-        if(it.getType() == Material.COMPASS && it.hasItemMeta() && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().equalsIgnoreCase("§5Config")){
+        if(player.hasPermission("bingo.config") && it.getType() == Material.COMPASS && it.hasItemMeta() && it.getItemMeta().hasDisplayName() && it.getItemMeta().getDisplayName().equalsIgnoreCase("§5Config")){
             ConfigMenu.CONFIG.open(player);
         }
 
@@ -101,6 +105,23 @@ public class MainListeners implements Listener{
             TeamSelectorMenu.TEAMSELECTOR.open(player);
         }
 
+    }
+
+    @EventHandler
+    public void onRecupItem(PlayerPickupItemEvent event){
+        Main main = JavaPlugin.getPlugin(Main.class);
+        ItemStack item = event.getItem().getItemStack();
+
+        instance = this;
+
+        if(plugin.game.state.equals(State.Launched)){
+
+            if(main.saver.contains(item)){
+
+                correctItem.add(item);
+
+            }
+        }
     }
 
     @EventHandler

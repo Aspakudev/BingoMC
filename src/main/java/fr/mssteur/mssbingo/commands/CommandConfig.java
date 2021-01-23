@@ -20,7 +20,7 @@ public class CommandConfig implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] strings) {
 
-        if(sender instanceof Player){
+        if(sender instanceof Player && sender.hasPermission("bingo.config")){
             Player player = (Player) sender;
             player.updateInventory();
 

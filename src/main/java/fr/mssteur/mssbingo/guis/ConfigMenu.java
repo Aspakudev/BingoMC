@@ -5,20 +5,29 @@ import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import fr.mssteur.mssbingo.Main;
-import fr.mssteur.mssbingo.objects.Game;
+import fr.mssteur.mssbingo.listeners.MainListeners;
+import fr.mssteur.mssbingo.utils.TitleUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.Collections;
+import java.util.List;
 
 public class ConfigMenu implements InventoryProvider {
 
     public int starter = 1;
-    private Game plugin;
+
+    public Main plugin;
+
+    public ConfigMenu(){
+
+        this.plugin = (Main) Bukkit.getServer().getPluginManager().getPlugin("MSSBingo");
+
+    }
 
     public static final SmartInventory CONFIG = SmartInventory.builder()
             .id("configGui")
@@ -89,7 +98,8 @@ public class ConfigMenu implements InventoryProvider {
                 e -> player.closeInventory()));
         if(starter == 1){
             contents.set(1, 4, ClickableItem.of(new ItemStack(startSlime),
-                    e -> { plugin.launch(player);
+                    e -> { plugin.game.launch();
+                        TitleUtils.sendTitle((List<Player>) player.getPlayer(), 0, 1, 0, "§2Lancement de la partie!", "§aChargement du terrain ...");
                     }));
         }
 
